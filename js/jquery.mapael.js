@@ -1332,10 +1332,13 @@
             var self = this;
             var tooltipTO = 0;
             var cssClass = self.$tooltip.attr('class');
+
             var updateTooltipPosition = function (x, y) {
                 var tooltipPosition = {
-                    "left": Math.min(self.$map.width() - self.$tooltip.outerWidth() - 5, x - self.$map.offset().left + 10),
-                    "top": Math.min(self.$map.height() - self.$tooltip.outerHeight() - 5, y - self.$map.offset().top + 20)
+                    //"left": Math.min(self.$map.width() - self.$tooltip.outerWidth() - 5, x - self.$map.offset().left + 10),
+                    //"top": Math.min(self.$map.height() - self.$tooltip.outerHeight() - 5, y - self.$map.offset().top + 20)
+                    "left":x,
+                    "top":y
                 };
 
                 if (elem.tooltip.overflow !== undefined) {
@@ -1350,7 +1353,7 @@
                 self.$tooltip.css(tooltipPosition);
             };
 
-            $(elem.node).on("mouseover." + pluginName, function (e) {
+            $(elem.node).on("click." + pluginName, function (e) {
                 tooltipTO = setTimeout(
                     function () {
                         self.$tooltip.attr("class", cssClass);
@@ -1364,14 +1367,13 @@
                                 self.$tooltip.addClass(elem.tooltip.cssClass);
                             }
                         }
-                        updateTooltipPosition(e.pageX, e.pageY);
+                        updateTooltipPosition(elem.attrs.cx,elem.attrs.cy);
                     }, 120
                 );
-            }).on("mouseout." + pluginName, function () {
-                clearTimeout(tooltipTO);
-                self.$tooltip.css("display", "none");
+            }).on("mouseout." + pluginName, function (e) {
+                
             }).on("mousemove." + pluginName, function (e) {
-                updateTooltipPosition(e.pageX, e.pageY);
+                
             });
         },
 
